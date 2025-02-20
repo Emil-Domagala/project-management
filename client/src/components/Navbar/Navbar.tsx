@@ -19,7 +19,7 @@ const Navbar = () => {
           <button
             onClick={() => dispatch(setIsSideBarCollapsed(!isSidebarCollapsed))}
           >
-            <MenuIcon className="h-8 w-8 dark:text-white" />
+            <MenuIcon className="size-8 dark:text-white" />
           </button>
         )}
 
@@ -40,16 +40,16 @@ const Navbar = () => {
           onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
         >
           {isDarkMode ? (
-            <Sun className="h-6 w-6 cursor-pointer dark:text-white" />
+            <Sun className="size-6 cursor-pointer dark:text-white" />
           ) : (
-            <Moon className="h-6 w-6 cursor-pointer dark:text-white" />
+            <Moon className="size-6 cursor-pointer dark:text-white" />
           )}
         </button>
         <Link
           href="/settings"
           className={`h-min w-min rounded p-2 ${isDarkMode ? "dark:hover:bg-gray-700" : "dark:hover:bg-gray-100"}`}
         >
-          <Settings className="h-6 w-6 cursor-pointer dark:text-white" />
+          <Settings className="size-6 cursor-pointer dark:text-white" />
         </Link>
         <div className="ml-2 mr-5 hidden min-h-[2em] w-[0.1rem] bg-gray-200 md:inline-block" />
       </div>
