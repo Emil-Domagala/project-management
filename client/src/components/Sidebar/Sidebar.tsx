@@ -80,7 +80,7 @@ const Sidebar = () => {
           <SidebarLink href="/search" icon={Search} label="Search" />
           <SidebarLink href="/settings" icon={Settings} label="Settings" />
           <SidebarLink href="/users" icon={User} label="User" />
-          <SidebarLink href="/team" icon={Users} label="Team" />
+          <SidebarLink href="/teams" icon={Users} label="Team" />
         </nav>
         {/* Projects  */}
         <button

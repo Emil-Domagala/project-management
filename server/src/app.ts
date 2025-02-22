@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import projectRoutes from './routes/projectsRoutes.ts';
 import taskRoutes from './routes/tasksRoutes.ts';
+import searchRoutes from './routes/searchRoutes.ts';
+import userRoutes from './routes/userRoutes.ts';
+import teamRoutes from './routes/teamRoutes.ts';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,6 +32,9 @@ app.get('/', (_req, res) => {
 });
 app.use('/projects', projectRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/search', searchRoutes);
+app.use('/users', userRoutes);
+app.use('/teams', teamRoutes);
 
 app.listen(PORT, () => {
   console.log(`SERVER RUN ON PORT: ${PORT}`);
