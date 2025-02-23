@@ -33,8 +33,6 @@ export const getTeams: ControllerFunctionType = async (req, res) => {
 
     const total = await prisma.team.count();
 
-    console.log(teamsWithNames);
-
     return res.status(200).json({ teams: teamsWithNames, total });
   } catch (err: any) {
     res.status(500).json({ message: `Error retriving tasks: ${err.message}` });
