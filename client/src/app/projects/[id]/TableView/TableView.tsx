@@ -49,13 +49,13 @@ const TableView = ({ id, setIsModalNewTaskOpen }: Props) => {
       field: "author",
       headerName: "Author",
       width: 150,
-      renderCell: (params) => params.value.username || "Unknown",
+      renderCell: (params) => params.value?.username || "Unknown",
     },
     {
       field: "assignee",
       headerName: "Assignee",
       width: 150,
-      renderCell: (params) => params.value.username || "Unassigned",
+      renderCell: (params) => params.value?.username || "Unassigned",
     },
   ];
 

@@ -9,7 +9,7 @@ import userRoutes from './routes/userRoutes.ts';
 import teamRoutes from './routes/teamRoutes.ts';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 // const databaseURL = process.env.DATABASE_URL;
 
 app.use(express.json());
@@ -36,6 +36,6 @@ app.use('/search', searchRoutes);
 app.use('/users', userRoutes);
 app.use('/teams', teamRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`SERVER RUN ON PORT: ${PORT}`);
 });

@@ -68,3 +68,17 @@ export const updateTaskStatus: ControllerFunctionType = async (req, res) => {
     res.status(500).json({ message: `Error updating Task: ${err.message}` });
   }
 };
+
+export const getUserTasks: ControllerFunctionType = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { OR: [{ authorUserId: +userId }, { assignedUserId: +userId }] },
+      include: { author: true, assignee: true },
+    });
+
+    return res.status(200).json(tasks);
+  } catch (err: any) {
+    res.status(500).json({ message: `Error retriving users tasks: ${err.message}` });
+  }
+};

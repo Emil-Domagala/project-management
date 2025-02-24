@@ -1,19 +1,15 @@
 import Modal from "../Modal/Modal";
-import {
-  Priority,
-  Status,
-  useCreateTaskMutation,
-} from "@/state/api";
+import { Priority, Status, useCreateTaskMutation } from "@/state/api";
 import { formatISO } from "date-fns";
 import { useState } from "react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  id: number;
+  id?: number | null;
 };
 
-const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
+const ModalNewTask = ({ isOpen, onClose, id = null }: Props) => {
   const [createTask] = useCreateTaskMutation();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +20,7 @@ const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
   const [assignedUserId, setAssignedUserId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [projectId, setProjectId] = useState("");
 
   const handleSubmit = async () => {
     if (!isFormValid) return;
@@ -45,11 +42,12 @@ const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
       assignedUserId: parseInt(assignedUserId),
       startDate: formattedStartDate,
       dueDate: formattedDueDate,
-      projectId: id,
+      projectId: id !== null ? +id : +projectId,
     });
   };
 
-  const isFormValid = title.trim().length > 3 && authorUserId;
+  const isFormValid =
+    title.trim().length > 3 && authorUserId && (id !== null || projectId);
 
   const selectStyles =
     "mb-4 block w-full rounded border border-gray-300 px-3 py-2 dark:border-dark-tertiary dark:bg-dark-tertiary dark:text-white dark:focus:outline-none";
@@ -145,6 +143,15 @@ const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
           value={assignedUserId}
           onChange={(e) => setAssignedUserId(e.target.value)}
         />
+        {id === null && (
+          <input
+            type="number"
+            className={inputStyles}
+            placeholder="ProjectId"
+            value={projectId}
+            onChange={(e) => setProjectId(e.target.value)}
+          />
+        )}
 
         <button
           type="submit"
