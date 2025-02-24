@@ -1,4 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  createApi,
+  fetchBaseQuery,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
+import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 
 export interface Project {
   id: number;
@@ -80,10 +85,53 @@ export interface SearchResults {
 }
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    prepareHeaders: async (headers) => {
+      const session = await fetchAuthSession();
+      const { accessToken } = session.tokens ?? {};
+      if (accessToken) {
+        headers.set("Authorization", `Bearer ${accessToken}`);
+      }
+      return headers;
+    },
+  }),
   reducerPath: "api",
   tagTypes: ["Projects", "Tasks", "Users", "Teams"],
   endpoints: (build) => ({
+    getAuthUser: build.query<
+      { user: unknown; userSub: string | undefined; userDetails: User },
+      void
+    >({
+      queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+        try {
+          const user = await getCurrentUser();
+          const session = await fetchAuthSession();
+          if (!session) throw new Error("No session found");
+          const { userSub } = session;
+
+          const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
+
+          if (userDetailsResponse.error) {
+            return { error: userDetailsResponse.error };
+          }
+
+          const userDetails = userDetailsResponse.data as User;
+
+          return { data: { user, userSub, userDetails } };
+        } catch (err: unknown) {
+          return {
+            error: {
+              status: 500,
+              statusText: "Internal Server Error",
+              data:
+                err instanceof Error ? err.message : "Couldn’t fetch user data",
+            } as FetchBaseQueryError,
+          };
+        }
+      },
+    }),
+
     getProjects: build.query<Project[], void>({
       query: () => "projects",
       providesTags: ["Projects"],
@@ -163,4 +211,5 @@ export const {
   useGetUserQuery,
   useGetTeamsQuery,
   useGetTasksByUserQuery,
+  useGetAuthUserQuery,
 } = api;

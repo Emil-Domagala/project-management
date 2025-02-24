@@ -4,7 +4,12 @@ import Header from "@/components/Header/Header";
 import ModalNewTask from "@/components/ModalNewTask/ModalNewTask";
 import TaskCard from "@/components/TaskCard/TaskCard";
 import { dataGridClassNames, dataGridSxStyles } from "@/lib/utils";
-import { Priority, Task, useGetTasksByUserQuery } from "@/state/api";
+import {
+  Priority,
+  Task,
+  useGetAuthUserQuery,
+  useGetTasksByUserQuery,
+} from "@/state/api";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -55,8 +60,10 @@ const columns: GridColDef[] = [
 ];
 
 const ReusableLayout = ({ priority }: Props) => {
+  const { data: currentUser } = useGetAuthUserQuery();
+
   const [view, setView] = useState("list");
-  const userId = 1;
+  const userId = Number(currentUser?.userDetails.userId) ?? null;
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
   const {
     data: tasks,

@@ -175,7 +175,7 @@ const Task = ({ task }: TaskProps) => {
     >
       {task.attachments && task.attachments.length > 0 && (
         <Image
-          src={`/${task.attachments[0].fileURL}`}
+          src={`${process.env.NEXT_PUBLIC_AMAZON_S3_BASE_URL}/${task.attachments[0].fileURL}`}
           alt={task.attachments[0].fileName}
           width={400}
           height={200}
@@ -223,7 +223,7 @@ const Task = ({ task }: TaskProps) => {
               {task.assignee && (
                 <Image
                   key={task.assignee.userId}
-                  src={`/${task.assignee.profilePictureUrl!}`}
+                  src={`${process.env.NEXT_PUBLIC_AMAZON_S3_BASE_URL}/${task.assignee.profilePictureUrl!}`}
                   alt={task.assignee.username}
                   width={30}
                   height={30}
@@ -233,7 +233,7 @@ const Task = ({ task }: TaskProps) => {
               {task.author && (
                 <Image
                   key={task.author.userId}
-                  src={`/${task.author.profilePictureUrl!}`}
+                  src={`${process.env.NEXT_PUBLIC_AMAZON_S3_BASE_URL}/${task.author.profilePictureUrl!}`}
                   alt={task.author.username}
                   width={30}
                   height={30}

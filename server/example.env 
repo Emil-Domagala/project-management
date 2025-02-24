@@ -1,0 +1,3 @@
+DATABASE_URL="postgresql://postgres:Password@localhost:5432/projectmanagment?schema=public"
+ORIGIN='http://localhost:3000'
+PORT=8000
